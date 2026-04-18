@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: advisory_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: advisory
+      POSTGRES_PASSWORD: advisory
+      POSTGRES_DB: advisory
+    ports:
+      - "5433:5432"
+    volumes:
+      - advisory_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U advisory -d advisory"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  advisory_pgdata:
